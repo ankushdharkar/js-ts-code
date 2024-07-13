@@ -1,22 +1,22 @@
 function getURL(dev = false, tasks = {}) {
   const baseURL = "/tasks";
-  const url = new URLSearchParams(baseURL);
+  const params = new URLSearchParams(baseURL);
   if (dev) {
-    url.append("STATUS", "ACTIVE");
-    url.append("dev", true);
-    url.append("size", 20);
+    params.append("STATUS", "ACTIVE");
+    params.append("dev", true);
+    params.append("size", 20);
   }
   if (tasks.nextTasks) {
-    url.append("hasNext", true);
+    params.append("hasNext", true);
   }
 
   if (tasks.prevTasks) {
-    url.append("hasPrev", true);
+    params.append("hasPrev", true);
   }
 
-  const query = url.toString() ?? "";
+  const query = params.toString() ?? "";
 
-  const urlWithQuery = baseURL + (query.length > 0 ? "?" + query : "");
+  const url = baseURL + (query.length > 0 ? "?" + query : "");
 
-  return urlWithQuery;
+  return { url };
 }
