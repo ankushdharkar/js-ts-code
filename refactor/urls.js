@@ -9,10 +9,10 @@ function getURL(dev = false, tasks = {}) {
   };
   const queryParams = new URLSearchParams(dev ? params : {});
   if (nextTasks) {
-    queryParams.append("hasNext", "true");
+    queryParams.set("hasNext", "true");
   }
   if (prevTasks) {
-    queryParams.append("hasPrev", "true");
+    queryParams.set("hasPrev", "true");
   }
   const url = queryParams.toString()
     ? `${baseUrl}?${queryParams.toString()}`
