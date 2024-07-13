@@ -1,5 +1,5 @@
 
-function buildURL(isDev = false, taskFlags = {}) {
+function getURL(isDev = false, taskFlags = {}) {
   const baseEndpoint = "/tasks";
   const queryParams = new URLSearchParams();
 
