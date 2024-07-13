@@ -1,19 +1,6 @@
-interface Tasks {
-  nextTasks?: boolean;
-  prevTasks?: boolean;
-}
-
-interface URLResult {
-  url: string;
-}
-
-function getURL(
-  dev: boolean = false,
-  tasks: Tasks = {},
-  additionalParams: Record<string, string> = {}
-): URLResult {
+function getURL(dev = false, tasks = {}, additionalParams = {}) {
   const BASE_URL = "/tasks";
-  const DEV_PARAMS: Record<string, string> = {
+  const DEV_PARAMS = {
     status: "ACTIVE",
     dev: "true",
     size: "20",
