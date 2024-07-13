@@ -1,6 +1,6 @@
 function getUrl(dev = false, tasks = {}) {
 	let url = dev
-		? `/tasks?status=active&size=20&dev=${dev}`
+		? `/tasks?status=active&size=20&dev=true`
 		: `/tasks`;
 
 	if (tasks.nextTasks && tasks.prevTasks) {
