@@ -6,7 +6,7 @@ function getUrl(dev = false, tasks = {}) {
 		: `/tasks`;
 
 	if (tasks.nextTasks && tasks.prevTasks) {
-		url += `?prev=true&next=true`;
+		url += `${dev ? '&': '?'}prev=true&next=true`;
 		return url;
 	}
 
