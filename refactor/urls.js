@@ -1,37 +1,30 @@
-function getURL(dev = false, tasks = {}, additionalParams = {}) {
-  const BASE_URL = "/tasks";
-  const DEV_PARAMS = {
-    status: "ACTIVE",
-    dev: "true",
-    size: "20",
-  };
+function getURL(dev = false, tasks = {}) {
+  try {
+    const baseUrl = "/tasks";
+    const params = new URLSearchParams();
 
-  tasks = tasks || {};
+    if (dev === true) {
+      params.append("status", "ACTIVE");
+      params.append("dev", "true");
+      params.append("size", "20");
+    }
 
-  const params = new URLSearchParams();
+    if (tasks.nextTasks === true) {
+      params.append("hasNext", "true");
+    }
 
-  if (dev) {
-    Object?.entries(DEV_PARAMS)?.forEach(([key, value]) => {
-      params?.append(key, value);
-    });
+    if (tasks.prevTasks === true) {
+      params.append("hasPrev", "true");
+    }
+
+    let url = baseUrl;
+    if (params.size > 0) {
+      url += "?" + params.toString();
+    }
+
+    return { url };
+  } catch (error) {
+    console.error("Error in getURL function:", error);
+    return { url: "/tasks", error: "Failed to generate URL" };
   }
-
-  if (tasks?.nextTasks) {
-    params?.append("hasNext", "true");
-  }
-
-  if (tasks?.prevTasks) {
-    params?.delete("hasNext");
-    params?.append("hasPrev", "true");
-  }
-
-  Object?.entries(additionalParams)?.forEach(([key, value]) => {
-    params?.append(key, value);
-  });
-
-  const url = params?.toString()
-    ? `${BASE_URL}?${params?.toString()}`
-    : BASE_URL;
-
-  return { url };
 }
