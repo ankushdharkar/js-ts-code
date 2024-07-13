@@ -6,11 +6,11 @@ function getURL(dev = false, tasks = {}) {
         : '/tasks';
 
     if (tasks.nextTasks) {
-        url += '?hasNext=true';
+        url += dev ? '&hasNext=true' : '?hasNext=true';
     }
 
     if (tasks.prevTasks) {
-        url = '/tasks?hasPrev=true';
+        url += dev ? '&hasPrev=true' : '?hasPrev=true';
     }
     return { url };
 }
