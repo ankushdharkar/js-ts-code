@@ -3,6 +3,8 @@ function getUrl(dev = false, tasks = {}) {
 		? `/tasks?dev=true&size=20&status=active`
 		: `/tasks`;
 
+	if (!tasks) return url;
+
 	if (tasks.nextTasks && tasks.prevTasks) {
 		url += `${dev ? '&' : '?'}prev=true&next=true`;
 		return url;
