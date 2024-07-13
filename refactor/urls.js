@@ -1,16 +1,30 @@
-// Refactor this code
-
 function getURL(dev = false, tasks = {}) {
-    let url = dev
-        ? `/tasks?status=ACTIVE&dev=true&size=20`
-        : '/tasks';
+  try {
+    const baseUrl = "/tasks";
+    const params = new URLSearchParams();
 
-    if (tasks.nextTasks) {
-        url += '?hasNext=true';
+    if (dev === true) {
+      params.append("status", "ACTIVE");
+      params.append("dev", "true");
+      params.append("size", "20");
     }
 
-    if (tasks.prevTasks) {
-        url = '/tasks?hasPrev=true';
+    if (tasks.nextTasks === true) {
+      params.append("hasNext", "true");
     }
+
+    if (tasks.prevTasks === true) {
+      params.append("hasPrev", "true");
+    }
+
+    let url = baseUrl;
+    if (params.size > 0) {
+      url += "?" + params.toString();
+    }
+
     return { url };
+  } catch (error) {
+    console.error("Error in getURL function:", error);
+    return { url: "/tasks", error: "Failed to generate URL" };
+  }
 }
