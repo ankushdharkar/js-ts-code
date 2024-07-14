@@ -16,5 +16,6 @@ function getURL(dev = false, tasks = {}) {
     params.append("hasPrev", "true");
   }
 
-  return { url: `${baseURL}?${params.toString()}` };
+  const queryString = params.toString();
+  return { url: queryString ? `${baseURL}?${queryString}` : baseURL };
 }
