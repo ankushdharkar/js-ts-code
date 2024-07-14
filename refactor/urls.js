@@ -20,5 +20,5 @@ function getURL(dev = false, tasks = {}) {
 	})
 
 	const queryString = queryParams.toString()
-	return { url: baseUrl + `${queryString ? `?${queryString}` : ""}` }
+	return { url: queryString ? baseUrl + "?" + queryString : baseUrl }
 }
