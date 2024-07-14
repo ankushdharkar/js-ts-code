@@ -1,6 +1,6 @@
 // Refactor this code
 
-function getURL(dev = false, tasks = {}) {
+function getURL(dev = false, tasks) {
     let url = dev
         ? `/tasks?status=ACTIVE&dev=true&size=20`
         : '/tasks';
@@ -10,7 +10,9 @@ function getURL(dev = false, tasks = {}) {
     }
 
     if (tasks.prevTasks) {
-        url = '/tasks?hasPrev=true';
+        url += '?hasPrev=true';
+        // here we have to remove the `/tasks` because it will right twice time here 
     }
-    return { url };
+    return url ;
+    //here we have to remove the curly braces 
 }
