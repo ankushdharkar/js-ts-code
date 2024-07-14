@@ -1,16 +1,24 @@
-// Refactor this code
-
 function getURL(dev = false, tasks = {}) {
-    let url = dev
-        ? `/tasks?status=ACTIVE&dev=true&size=20`
-        : '/tasks';
+	if (typeof dev !== "boolean") {
+		throw new Error("Invalid type for dev parameter")
+	}
+	if (typeof tasks !== "object") {
+		throw new Error("Invalid type for tasks parameter")
+	}
 
-    if (tasks.nextTasks) {
-        url += '?hasNext=true';
-    }
+	const baseUrl = "/tasks"
+	const queryParams = new URLSearchParams()
 
-    if (tasks.prevTasks) {
-        url = '/tasks?hasPrev=true';
-    }
-    return { url };
+	const devParams = dev ? { status: "active", dev: "true", size: "20" } : {}
+	const taskParams = {
+		hasNext: tasks.nextTasks ? "true" : undefined,
+		hasPrev: tasks.prevTasks ? "true" : undefined,
+	}
+
+	Object.entries({ ...devParams, ...taskParams }).forEach(([key, value]) => {
+		if (value !== undefined) queryParams.set(key, value)
+	})
+
+	const queryString = queryParams.toString()
+	return { url: queryString ? baseUrl + "?" + queryString : baseUrl }
 }
