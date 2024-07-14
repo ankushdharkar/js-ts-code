@@ -1,16 +1,25 @@
 // Refactor this code
 
-function getURL(dev = false, tasks = {}) {
-    let url = dev
-        ? `/tasks?status=ACTIVE&dev=true&size=20`
-        : '/tasks';
+function getUrl(dev = false, tasks = {}) {
+  const params = new URLSearchParams();
 
+  if (dev) {
+    params.append("status", "ACTIVE");
+    params.append("dev", true);
+    params.append("size", 20);
+  }
+
+  if (tasks) {
     if (tasks.nextTasks) {
-        url += '?hasNext=true';
+      params.append("hasNext", true);
     }
-
     if (tasks.prevTasks) {
-        url = '/tasks?hasPrev=true';
+      params.append("hasPrev", true);
     }
-    return { url };
+  }
+
+  const queryString = params.toString();
+  const url = queryString ? `/tasks?${queryString}` : "/tasks";
+
+  return { url };
 }
