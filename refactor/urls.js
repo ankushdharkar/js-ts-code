@@ -1,16 +1,32 @@
-// Refactor this code
+const {
+  BASE_URL,
+  DEV_QUERY_PARAMS,
+  NEXT_TASKS_PARAMS,
+  PREV_TASKS_PARAMS,
+} = require("./constant");
 
-function getURL(dev = false, tasks = {}) {
-    let url = dev
-        ? `/tasks?status=ACTIVE&dev=true&size=20`
-        : '/tasks';
+const { getQueryParams } = require("./utils");
 
-    if (tasks.nextTasks) {
-        url += '?hasNext=true';
-    }
+const getURL = (dev = false, tasks = {}) => {
+  let queryParams = {};
 
-    if (tasks.prevTasks) {
-        url = '/tasks?hasPrev=true';
-    }
-    return { url };
-}
+  if (dev) {
+    queryParams = { ...queryParams, ...DEV_QUERY_PARAMS };
+  }
+
+  if (tasks?.nextTasks) {
+    queryParams = { ...queryParams, ...NEXT_TASKS_PARAMS };
+  }
+
+  if (tasks?.prevTasks) {
+    queryParams = { ...PREV_TASKS_PARAMS };
+  }
+
+  const queryString = Object.keys(queryParams).length
+    ? getQueryParams(queryParams)
+    : false;
+
+  const url = queryString ? `${BASE_URL}?${queryString}` : BASE_URL;
+
+  return { url };
+};
