@@ -1,16 +1,19 @@
-// Refactor this code
+const TASKS_BASE_ENDPOINT = "/tasks";
+const DEFAULT_TASKS_PARAMS = {
+    status: "ACTIVE",
+    size: 20,
+};
 
-function getURL(dev = false, tasks = {}) {
-    let url = dev
-        ? `/tasks?status=ACTIVE&dev=true&size=20`
-        : '/tasks';
+function getURL(dev = false, tasks = {}, params = DEFAULT_TASKS_PARAMS) {
+    const { nextTasks = false, prevTasks = false } = tasks;
+    const { status, size } = params;
 
-    if (tasks.nextTasks) {
-        url += '?hasNext=true';
-    }
+    let url = TASKS_BASE_ENDPOINT;
+    if (dev)
+        url = `${TASKS_BASE_ENDPOINT}?status=${status}&dev=${dev}&size=${size}`;
 
-    if (tasks.prevTasks) {
-        url = '/tasks?hasPrev=true';
-    }
+    if (nextTasks) url += "?hasNext=true";
+    if (prevTasks) url = `${TASKS_BASE_ENDPOINT}?hasPrev=true`;
+
     return { url };
 }
