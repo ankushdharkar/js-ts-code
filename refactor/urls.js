@@ -2,6 +2,7 @@
 
 function getURL(dev = false, tasks = {}) {
   const BASE_TASK_URL = '/tasks';
+
   if (tasks.prevTasks) return { url: `${BASE_TASK_URL}?hasPrev=true` };
 
   const params = new URLSearchParams();
