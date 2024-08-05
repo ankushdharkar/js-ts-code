@@ -1,19 +1,20 @@
-const TASKS_BASE_ENDPOINT = "/tasks";
-const DEFAULT_TASKS_PARAMS = {
-    status: "ACTIVE",
-    size: 20,
-};
+const TASKS_BASE = "/tasks";
 
-function getURL(dev = false, tasks = {}, params = DEFAULT_TASKS_PARAMS) {
-    const { nextTasks = false, prevTasks = false } = tasks;
-    const { status, size } = params;
+function getURL(dev = false, tasks = {}, params) {
+    const { nextTasks, prevTasks } = tasks;
+    const { status = "ACTIVE", size = 20 } = params;
 
-    let url = TASKS_BASE_ENDPOINT;
-    if (dev)
-        url = `${TASKS_BASE_ENDPOINT}?status=${status}&dev=${dev}&size=${size}`;
+    let url = TASKS_BASE;
+    const queryParams = new URLSearchParams({
+        status,
+        size,
+        dev,
+    });
+    const stringParams = queryParams.toString();
 
-    if (nextTasks) url += "?hasNext=true";
-    if (prevTasks) url = `${TASKS_BASE_ENDPOINT}?hasPrev=true`;
+    if (dev) url += `?${stringParams}`;
+    if (nextTasks) url += `${stringParams ? "&" : "?"}hasNext=true`;
+    if (prevTasks) url += `${stringParams ? "&" : "?"}hasPrev=true`;
 
     return { url };
 }
