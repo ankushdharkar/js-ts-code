@@ -1,16 +1,22 @@
-// Refactor this code
+const getDevURL = (dev, prevTasks) => {
+  return dev && !prevTasks ? "?status=ACTIVE&dev=true&size=20" : "";
+};
 
-function getURL(dev = false, tasks = {}) {
-    let url = dev
-        ? `/tasks?status=ACTIVE&dev=true&size=20`
-        : '/tasks';
+const getNextTasksURL = (dev, nextTasks) => {
+  return nextTasks ? `${dev ? "&" : "?"}hasNext=true` : "";
+};
 
-    if (tasks.nextTasks) {
-        url += '?hasNext=true';
-    }
+const getprevTasksURL = (prevTasks) => {
+  return prevTasks ? "?hasPrev=true" : "";
+};
 
-    if (tasks.prevTasks) {
-        url = '/tasks?hasPrev=true';
-    }
-    return { url };
+function getURL(dev = false, { nextTasks, prevTasks } = {}) {
+  const BASE_URL = "/tasks";
+  return {
+    url:
+      BASE_URL +
+      getDevURL(dev, prevTasks) +
+      getNextTasksURL(dev, nextTasks) +
+      getprevTasksURL(prevTasks),
+  };
 }
