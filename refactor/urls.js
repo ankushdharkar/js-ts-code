@@ -1,16 +1,23 @@
-// Refactor this code
+function setDevParams(searchParams) {
+  searchParams.set("status", "ACTIVE");
+  searchParams.set("dev", true);
+  searchParams.set("size", 20);
+}
+
+function setNextTasksParams(searchParams) {
+  searchParams.set("hasNext", true);
+}
+
+function setPrevTasksParams(searchParams) {
+  searchParams = new URLSearchParams({ hasPrev: true });
+}
 
 function getURL(dev = false, tasks = {}) {
-    let url = dev
-        ? `/tasks?status=ACTIVE&dev=true&size=20`
-        : '/tasks';
+  let url = new URL("https://tasks");
 
-    if (tasks.nextTasks) {
-        url += '?hasNext=true';
-    }
+  if (dev) setDevParams(url.searchParams);
+  if (tasks.nextTasks) setNextTasksParams(url.searchParams);
+  if (tasks.prevTasks) setPrevTasksParams(url.searchParams);
 
-    if (tasks.prevTasks) {
-        url = '/tasks?hasPrev=true';
-    }
-    return { url };
+  return { url: url.toString().slice(7) };
 }
