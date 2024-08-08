@@ -1,22 +1,23 @@
-const getDevURL = (dev, prevTasks) => {
-  return dev && !prevTasks ? "?status=ACTIVE&dev=true&size=20" : "";
-};
+function setDevParams(searchParams) {
+  searchParams.set("status", "ACTIVE");
+  searchParams.set("dev", true);
+  searchParams.set("size", 20);
+}
 
-const getNextTasksURL = (dev, nextTasks) => {
-  return nextTasks ? `${dev ? "&" : "?"}hasNext=true` : "";
-};
+function setNextTasksParams(searchParams) {
+  searchParams.set("hasNext", true);
+}
 
-const getprevTasksURL = (prevTasks) => {
-  return prevTasks ? "?hasPrev=true" : "";
-};
+function setPrevTasksParams(searchParams) {
+  searchParams = new URLSearchParams({ hasPrev: true });
+}
 
-function getURL(dev = false, { nextTasks, prevTasks } = {}) {
-  const BASE_URL = "/tasks";
-  return {
-    url:
-      BASE_URL +
-      getDevURL(dev, prevTasks) +
-      getNextTasksURL(dev, nextTasks) +
-      getprevTasksURL(prevTasks),
-  };
+function getURL(dev = false, tasks = {}) {
+  let url = new URL("https://tasks");
+
+  if (dev) setDevParams(url.searchParams);
+  if (tasks.nextTasks) setNextTasksParams(url.searchParams);
+  if (tasks.prevTasks) setPrevTasksParams(url.searchParams);
+
+  return { url: url.toString().slice(7) };
 }
