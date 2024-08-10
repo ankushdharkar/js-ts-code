@@ -2,13 +2,10 @@ const TASKS_BASE = "/tasks";
 
 function getURL(dev = false, tasks = {}, params) {
     const { nextTasks, prevTasks } = tasks;
-    const { status = "ACTIVE", size = 20 } = params;
 
     let url = TASKS_BASE;
     const queryParams = new URLSearchParams({
-        status,
-        size,
-        dev,
+        ...params
     });
     const stringParams = queryParams.toString();
 
