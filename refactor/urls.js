@@ -1,17 +1,29 @@
-const TASKS_BASE = "/tasks";
+let url = "/tasks";
+const defaultParams = {
+    status: ACTIVE,
+    dev: true,
+    size: 20
+}
 
-function getURL(dev = false, tasks = {}, params) {
-    const { nextTasks, prevTasks } = tasks;
+function getURL(dev = false, tasks = {}, params = defaultParams) {
+    const { nextTasks = false, prevTasks = false } = tasks;
 
-    let url = TASKS_BASE;
     const queryParams = new URLSearchParams({
         ...params
     });
     const stringParams = queryParams.toString();
 
-    if (dev) url += `?${stringParams}`;
-    if (nextTasks) url += `${stringParams ? "&" : "?"}hasNext=true`;
-    if (prevTasks) url += `${stringParams ? "&" : "?"}hasPrev=true`;
+    if (dev) {
+        url += `?${stringParams}`
+    }
+
+    // update accordingly in case of any tasks is true
+    if (nextTasks) {
+        url += `${stringParams ? "&" : "?"}hasNext=true`
+    }
+    if (prevTasks) {
+        url += `${stringParams ? "&" : "?"}hasPrev=true`;
+    }
 
     return { url };
 }
