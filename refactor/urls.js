@@ -1,16 +1,29 @@
-// Refactor this code
+let url = "/tasks";
+const defaultParams = {
+    status: ACTIVE,
+    dev: true,
+    size: 20
+}
 
-function getURL(dev = false, tasks = {}) {
-    let url = dev
-        ? `/tasks?status=ACTIVE&dev=true&size=20`
-        : '/tasks';
+function getURL(dev = false, tasks = {}, params = defaultParams) {
+    const { nextTasks = false, prevTasks = false } = tasks;
 
-    if (tasks.nextTasks) {
-        url += '?hasNext=true';
+    const queryParams = new URLSearchParams({
+        ...params
+    });
+    const stringParams = queryParams.toString();
+
+    if (dev) {
+        url += `?${stringParams}`
     }
 
-    if (tasks.prevTasks) {
-        url = '/tasks?hasPrev=true';
+    // update accordingly in case of any tasks is true
+    if (nextTasks) {
+        url += `${stringParams ? "&" : "?"}hasNext=true`
     }
+    if (prevTasks) {
+        url += `${stringParams ? "&" : "?"}hasPrev=true`;
+    }
+
     return { url };
 }
