@@ -16,7 +16,7 @@ function UrlBuilder(baseEndpoint = "/tasks") {
     this.queryParams = new URLSearchParams();
 }
 
-UrlBuilder.prototype.setDev = function (isDev = false) {
+UrlBuilder.prototype.enableDevMode = function (isDev = false) {
     if (isDev) {
         this.queryParams.append(ConfigKeys.status, Status.ACTIVE)
         this.queryParams.append(ConfigKeys.dev, true);
@@ -48,7 +48,7 @@ UrlBuilder.prototype.build = function () {
 
 function getURL(isDev = false, taskFlags = {}) {
     const urlBuilder = new UrlBuilder();
-    const finalURL = urlBuilder.setDev(isDev)
+    const finalURL = urlBuilder.enableDevMode(isDev)
     .nextTasks(taskFlags.nextTasks)
     .prevTasks(taskFlags.prevTasks)
     .build()
