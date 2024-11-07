@@ -1,16 +1,56 @@
-// Refactor this code
 
-function getURL(dev = false, tasks = {}) {
-    let url = dev
-        ? `/tasks?status=ACTIVE&dev=true&size=20`
-        : '/tasks';
+const ConfigKeys = Object.freeze({
+    status: "status",
+    dev: "dev",
+    size: "size",
+    hasNext: "hasNext",
+    hasPrev: "hasPrev"
+})
 
-    if (tasks.nextTasks) {
-        url += '?hasNext=true';
+const Status = Object.freeze({
+    ACTIVE: "ACTIVE"
+});
+
+function UrlBuilder(baseEndpoint = "/tasks") {
+    this.baseEndpoint = baseEndpoint;
+    this.queryParams = new URLSearchParams();
+}
+
+UrlBuilder.prototype.enableDevMode = function (isDev = false) {
+    if (isDev) {
+        this.queryParams.append(ConfigKeys.status, Status.ACTIVE)
+        this.queryParams.append(ConfigKeys.dev, true);
+        this.queryParams.append(ConfigKeys.size, 20);
     }
+    return this
+}
 
-    if (tasks.prevTasks) {
-        url = '/tasks?hasPrev=true';
+UrlBuilder.prototype.nextTasks = function (nextTasks = {}) {
+    if (nextTasks) {
+        this.queryParams.append(ConfigKeys.hasNext, true);
     }
-    return { url };
+    return this;
+}
+
+UrlBuilder.prototype.prevTasks = function (prevTasks = {}) {
+    if (prevTasks) {
+        this.queryParams.set(ConfigKeys.hasPrev, true);
+    }
+    return this;
+}
+
+UrlBuilder.prototype.build = function () {
+    const queryString = this.queryParams.toString();
+    return queryString
+    ? `${this.baseEndpoint}?${queryString}`
+    : baseEndpoint;
+}
+
+function getURL(isDev = false, taskFlags = {}) {
+    const urlBuilder = new UrlBuilder();
+    const finalURL = urlBuilder.enableDevMode(isDev)
+    .nextTasks(taskFlags.nextTasks)
+    .prevTasks(taskFlags.prevTasks)
+    .build()
+    return { url: finalURL };
 }
