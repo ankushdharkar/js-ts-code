@@ -5,12 +5,14 @@ function getURL(dev = false, tasks = {}) {
         ? `/tasks?status=ACTIVE&dev=true&size=20`
         : '/tasks';
 
+
     if (tasks.nextTasks) {
-        url += '?hasNext=true';
+        url += dev ? '&hasNext=true' : '?hasNext=true';
     }
 
     if (tasks.prevTasks) {
-        url = '/tasks?hasPrev=true';
+        //check if url aleardy contains params in case dev:true /tasks.nextTasks:true  and alse keep for case dev:false/tasks.nextTasks:true
+        url += url.includes('?') ? '&hasPrev=true' : '?hasPrev=true';
     }
     return { url };
 }
